@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  script 
+    | const client = mqtt.connect("mqtt://iot.pgw.jp:443")
+    | const topic = "topic_test01"
+    | client.subscribe(topic);
+    | client.on("message", function(topic, message) {
+    |   const obj = JSON.parse(message);
+    |   console.log(obj.Rand);
+    |   document.body.style.backgroundColor = "rgba(127,127,127," + obj.Rand/255 + ")";
+    |   document.body.querySelector("h1").innerHTML = obj.Rand;
+    | });
